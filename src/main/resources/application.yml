@@ -1,0 +1,13 @@
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/sse
+    username: postgres
+    password: mysecret
+    pool:
+      enabled: true
+
+  flyway:
+    url: jdbc:postgresql://localhost:5432/sse
+    user: postgres
+    password: mysecret
+    enabled: true

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Messages</title>
+    <script>
+        function setup() {
+            const evtSource = new EventSource("http://localhost:8080/messages");
+            console.log("Set up");
+            evtSource.onmessage = function (event) {
+                console.log(event);
+                const newElement = document.createElement("li");
+                const eventList = document.getElementById("list");
+
+                newElement.innerHTML = "Event data  : " + event.data;
+                eventList.appendChild(newElement);
+            }
+        }
+    </script>
+</head>
+<body onload="setup()">
+<h1>Messages</h1>
+<ul id="list">
+
+</ul>
+</body>
+</html>
