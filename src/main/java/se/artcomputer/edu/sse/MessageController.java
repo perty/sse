@@ -34,4 +34,14 @@ public class MessageController {
         String lastId = lastIds == null ? "0" : lastIds.get(0);
         return messageService.getMessages(lastId);
     }
+
+    @GetMapping(path = "slow", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Flux<Message> getMessagesSlowly() {
+        return messageService.slow();
+    }
+
+    @GetMapping(path = "/generate", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Flux<Message> generate() {
+        return messageService.generate();
+    }
 }

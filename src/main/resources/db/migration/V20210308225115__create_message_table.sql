@@ -1,5 +1,5 @@
 create table message
 (
-    id      int primary key,
+    id      serial primary key,
     message text not null
 );

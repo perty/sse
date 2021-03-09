@@ -6,8 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
-
-import java.util.stream.Stream;
+import reactor.core.publisher.Mono;
 
 @Service
 public class MessageService {
@@ -23,10 +22,35 @@ public class MessageService {
     public Flux<ServerSentEvent<String>> getMessages(String lastId) {
         int last = Integer.parseInt(lastId);
         return messageRepository.findByIdGreaterThan(last)
-                .map(m -> ServerSentEvent.<String> builder()
+                .map(m -> ServerSentEvent.<String>builder()
                         .id(String.valueOf(m.getId()))
                         .data(m.getMessage())
                         .build());
+    }
+
+    public Flux<Message> slow() {
+        return messageRepository.findAll()
+                .map(this::toDto);
+    }
+
+    public Flux<Message> generate() {
+        return Flux.range(0, 1000).flatMap(
+                this::create
+        );
+    }
+
+    private Mono<Message> create(Integer n) {
+        LOG.info("Create {}", n);
+        MessageEntity entity = new MessageEntity();
+        entity.setMessage("This is generated " + n);
+        return messageRepository.save(entity).map(this::toDto);
+    }
+
+    private Message toDto(MessageEntity messageEntity) {
+        Message message = new Message();
+        message.id = messageEntity.getId();
+        message.message = messageEntity.getMessage();
+        return message;
     }
 }
 
