@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+
 @Service
 public class MessageService {
     private static final Logger LOG = LoggerFactory.getLogger(MessageService.class);
@@ -30,6 +32,7 @@ public class MessageService {
 
     public Flux<Message> slow() {
         return messageRepository.findAll()
+                .delayElements(Duration.ofMillis(100))
                 .map(this::toDto);
     }
 

@@ -35,7 +35,7 @@ public class MessageController {
         return messageService.getMessages(lastId);
     }
 
-    @GetMapping(path = "slow", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "slow")
     public Flux<Message> getMessagesSlowly() {
         return messageService.slow();
     }

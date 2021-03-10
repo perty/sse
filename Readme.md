@@ -94,5 +94,14 @@ Cool, right?
 
 #### Reading many entities
 
-I would like to see the entites come trickling when querying for 1000 entities at once but they came all in one bunch. So I need to study this more.
+I would like to see the entities come trickling when querying for 1000 entities at once but they came all in one bunch. So I need to study this more.
+
+Ok, so this put me on the right track somehow [Full Reactive Stack with Spring Boot, WebFlux and MongoDB](https://thepracticaldeveloper.com/full-reactive-stack-2-backend-webflux/).
+
+The `delayElements` of `Flux` works in combination with server-sent events. It comes together here! By not stating the media type at the endpoint, I can use curl and accept header to get them trickling, like so:
+```
+ curl -H "Accept: text/event-stream" http://localhost:8080/messages/slow
+```
+It keeps asking for more so when 1000 entities have been sent, it starts over. Apparently what a client does when using this protocol so it is not just the browser.
+
 
