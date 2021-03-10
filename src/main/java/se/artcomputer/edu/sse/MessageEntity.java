@@ -33,5 +33,13 @@ public class MessageEntity implements Persistable<Long> {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    @Override
+    public String toString() {
+        return "MessageEntity{" +
+                "id=" + id +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }
 

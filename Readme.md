@@ -104,4 +104,12 @@ The `delayElements` of `Flux` works in combination with server-sent events. It c
 ```
 It keeps asking for more so when 1000 entities have been sent, it starts over. Apparently what a client does when using this protocol so it is not just the browser.
 
+Ok, this start-over business has to do with `delayElements` somehow. If I remove it, curl will terminate after all elements. Not intuitive to me. 
 
+There might be some timing issues. Sometimes curl hangs, sometimes it terminates and sometimes it keeps asking for more. 
+
+With a `log()` inserted I can see what is going on. 
+
+Something, perhaps Netty, is doing `request(24)` when the server responding quickly. It ends with a `onComplete()`.
+
+When slow, there are only `onNext(MessageEntity{id=919, message='This is generated 919'})` and they keep coming.
